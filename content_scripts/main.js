@@ -1,4 +1,4 @@
-(function() {
+function main() {
   /**
    * Check and set a global guard variable.
    * If this content script is injected into the same page again,
@@ -15,7 +15,6 @@
   var outVidEl=null;
   var curEl=null;
   var dmn=null;  
-
 
   /*-----------------------------------------------------------------------
   pre: none
@@ -122,7 +121,6 @@
   evalutes as to what actions to do for the video stuff
   -----------------------------------------------*/
   function videoCntrls(){
-
   var sty=document.createElement("style");
   sty.type="text/css";
   sty.className="extIdNmVSModSkipEl";
@@ -237,7 +235,7 @@
       }
     });
   }
-
 videoCntrls();
+}
 
-})
+main();
