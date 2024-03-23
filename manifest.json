@@ -27,16 +27,7 @@
     "default_icon": {
       "96":"icons/logo96.png"
     },
-    "default_title": "vidscotch",
-    "default_popup": "popup/menu.html"
-  },
-  "options_ui": {
-    "page":"./options/settings.html",
-    "open_in_tab":true
-  },
-  "background": {
-    "scripts": ["./background.js"],
-    "persistent": false
+    "default_title": "vidscotch"
   },
   "content_scripts": [
     {
