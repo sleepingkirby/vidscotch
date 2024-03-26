@@ -98,6 +98,11 @@ function main() {
       time+=e.ctrlKey?1:0;
       time+=e.altKey?0.03:0;
       time+=e.shiftKey?20:0;
+      var vol=0;
+      let tmpVol=0;
+      vol+=e.ctrlKey?0.05:0;
+      vol+=e.altKey?0.01:0;
+      vol+=e.shiftKey?0.2:0;
         if(time>0&&(e.key=="ArrowLeft"||e.key=="ArrowRight")){
         e.preventDefault();
           switch(e.key){
@@ -111,6 +116,22 @@ function main() {
             break;
           }
         }
+        else if(vol>0&&(e.key=="ArrowUp"||e.key=="ArrowDown")){
+          switch(e.key){
+            case "ArrowUp":
+              tmpVol=curVidEl.volume;
+              tmpVol+=vol;
+              curVidEl.volume=tmpVol>1?1:tmpVol;
+            break;
+            case "ArrowDown":
+              tmpVol=curVidEl.volume;
+              tmpVol-=vol;
+              curVidEl.volume=tmpVol<=0?0:tmpVol;
+            break;
+            default:
+            break;
+          }
+        } 
       }
     },true);
   }
