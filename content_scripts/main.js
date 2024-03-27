@@ -117,6 +117,7 @@ function main() {
           }
         }
         else if(vol>0&&(e.key=="ArrowUp"||e.key=="ArrowDown")){
+        e.preventDefault();
           switch(e.key){
             case "ArrowUp":
               tmpVol=curVidEl.volume;
@@ -132,6 +133,23 @@ function main() {
             break;
           }
         } 
+      }
+    },true);
+
+    window.addEventListener("wheel", function(e){
+      if(curVidEl&&curVidEl!=outVidEl){
+      let volDelta=e.deltaY/5000;
+      let tmpVol=curVidEl.volume;
+        if(e.deltaY!=0){
+          if(e.deltaY>0){
+          tmpVol-=volDelta;
+          curVidEl.volume=tmpVol<0?0:tmpVol;
+          }
+          else if(e.deltaY<0){
+          tmpVol-=volDelta;
+          curVidEl.volume=tmpVol>1?1:tmpVol;
+          }
+        }
       }
     },true);
   }
