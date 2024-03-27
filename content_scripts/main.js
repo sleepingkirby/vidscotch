@@ -134,13 +134,14 @@ function main() {
           }
         } 
       }
-    },true);
+    },{capture: true, passive: false});
 
     window.addEventListener("wheel", function(e){
       if(curVidEl&&curVidEl!=outVidEl){
       let volDelta=e.deltaY/5000;
       let tmpVol=curVidEl.volume;
         if(e.deltaY!=0){
+        e.preventDefault();
           if(e.deltaY>0){
           tmpVol-=volDelta;
           curVidEl.volume=tmpVol<0?0:tmpVol;
@@ -151,7 +152,7 @@ function main() {
           }
         }
       }
-    },true);
+    },{capture: true, passive: false});
   }
 
   /*-----------------------------------------------
