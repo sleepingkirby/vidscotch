@@ -1,9 +1,2 @@
 # vidscotch
-html5 video better skip/control
-Allows for better skipping of video.
-1/30 second (alt+L/R).
-1 second(ctrl+L/R).
-20 second(shift+L/R).
-Can be combined.
-
-Adds skip button.
+Allows for better control of video when mouse is over the video. With arrow keys, alt/Ctrl/Shift+L/R advances by 1/30, 1 and 20 secs respectively. Alt/Ctrl/Shift+U/D changes vol by 1%, 5% and 20%. All can be combined. Mouse wheel will also change volume. Adds skip button.
