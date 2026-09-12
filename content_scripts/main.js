@@ -275,7 +275,41 @@ function main() {
       }
     });
   }
+
+  /*-----------------------------------------------
+  pre:
+  post:
+  -----------------------------------------------*/
+  function runOnMsg(request, sender, sendResponse){
+    switch(request.action){
+      case 'actVid':
+        /*
+        browser.storage.local.get().then((item) => {
+        var lns=grepHTML(item.patt);
+          if(lns && lns!=''){
+          lns=item.list+lns;
+            browser.storage.local.set({list:lns}).then(() => {
+            console.log('mewate: results found.');
+            browser.runtime.sendMessage({bdgNm: lns.trim().split(/\r\n|\r|\n/).length.toString()});
+            sendResponse({'list':lns});
+            });
+          }
+          else{
+          console.log('mewate: no results found.');
+          }
+        });
+        sendResponse({'pullPatt':'done'});
+        */
+        console.log(request);
+      break;
+      default:
+      break;
+    }
+  }
+
 videoCntrls();
+
+browser.runtime.onMessage.addListener(runOnMsg);
 }
 
 main();
