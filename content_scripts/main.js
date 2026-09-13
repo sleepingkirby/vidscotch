@@ -46,7 +46,7 @@ function main() {
     return null;
     }
    
-  var el=null;
+  let el=null;
     
     if(!trgt.contentDocument||!trgt.contentDocument.body){
     return null;
@@ -54,8 +54,8 @@ function main() {
 
     el=trgt.contentDocument.body;
     
-  var obj=el.getElementsByTagName("video");
-  var m=obj.length;
+  let obj=el.getElementsByTagName("video");
+  let m=obj.length;
     for(let i=0;i<m;i++){
       if(obj[i].style.display&&obj[i].style.display!="none"){
       return obj[i];
@@ -303,6 +303,79 @@ function main() {
     });
   }
 
+
+  /*-----------------------------------------------
+  pre:
+  post:
+  -----------------------------------------------*/
+  function actVid(request, sendResponse=null){
+  console.log(request);
+    if(!request){
+    console.log(`no request data`);
+    return null;
+    }
+
+    /*
+    msg: Object { num: "0", act: "actVid", vidAct: "muted", … }
+    act: "actVid"
+    id: null
+    num: "0"
+    val: "on"
+    vidAct: "muted"
+    */
+  let vids=document.getElementsByTagName('video');
+    //if no vids or vids num doesn't exist
+    if(!vids||!vids.hasOwnProperty(request.msg.num)){
+    return null;
+    }
+
+  let vid=vids[0];
+
+    switch(request.msg.vidAct){
+      case 'muted':
+      vid.muted=request.msg.val;
+      break;
+      case 'paused':
+        if(request.msg.val==true){
+        vid.pause();
+        }
+        else{
+        vid.play();
+        }
+      break;
+      case 'highlight':
+        if(request.msg.val==true){
+        vid.setAttribute('origBorder',vid.style.border);
+        vid.setAttribute('origBoxSizing',vid.style.boxSizing);
+        vid.setAttribute('origTransition',vid.style.transition);
+        vid.style.transition="all 0.3s";
+        vid.style.boxSizing="border-box";
+        vid.style.border="5px solid red";
+        }
+        else{
+        vid.style.transition=vid.getAttribute('origTransition');
+        vid.style.boxSizing=vid.getAttribute('origBoxSizing');
+        vid.style.border=vid.getAttribute('origBorder');
+        }
+      break;
+       case 'bringfront':
+        if(request.msg.val==true){
+        vid.setAttribute('origZIndex',vid.style.zIndex);
+        vid.style.zIndex=2147483647;
+        }
+        else{
+        vid.style.zIndex=vid.getAttribute('origZIndex');
+        }
+      break;     
+      default:
+      break;
+    }    
+
+    if(sendResponse){
+    sendResponse(`actvid: <-----------`);
+    }
+  } 
+
   /*-----------------------------------------------
   pre:
   post:
@@ -330,8 +403,8 @@ function main() {
         });
         sendResponse({'pullPatt':'done'});
         */
-        console.log(request);
-        sendResponse({'testing': 'testval'});
+        actVid(request, sendResponse);
+        
       break;
       default:
       break;
