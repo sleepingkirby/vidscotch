@@ -1,5 +1,7 @@
 const cssDflt="./menu.css";
 const cssLght="./menulight.css";
+const chckbxHd='vid';
+
 
 function reportErr(error){
 console.error('' + error.message);
@@ -15,6 +17,70 @@ function doNothing(item, err){
 
 }
 
+
+/*---------------------------------------------------------------------
+pre: chckbxHd
+post: none
+creates new checkbox element
+param: obj={id, name, muted, paused, volume}, type=muted|paused|volume
+---------------------------------------------------------------------*/
+function newChckbx(obj=null, num, type=null){
+let rtrn=null;
+const hd="vid";
+  if(!obj||typeof obj!="object"||Object.keys(obj).length<=0||!type){
+  return null;
+  }
+rtrn=document.createElement('input');
+rtrn.type='checkbox';
+rtrn.setAttribute(`title`, type);
+rtrn.setAttribute(`act`, 'actVid');
+rtrn.setAttribute(`${chckbxHd}Num`, num);
+rtrn.setAttribute(`${chckbxHd}Id`, obj.id);
+rtrn.setAttribute(`${chckbxHd}Name`, obj.name);
+rtrn.setAttribute(`${chckbxHd}Act`, type);
+rtrn.checked=obj[type];
+return rtrn;
+}
+
+/*---------------------------------------------------------------------
+pre: newChckbx()
+post: none
+---------------------------------------------------------------------*/
+function vidCntrlDiv(obj, num){
+//outer wrapper
+let tmpEl=document.createElement('div');
+tmpEl.setAttribute('vidId',num);
+tmpEl.title=num;
+tmpEl.className='vidCntrl';
+//video id attempt
+let inEl=document.createElement('div');
+inEl.innerText=`${num}) id: ${obj.id}, name:  ${obj.name}`;
+tmpEl.appendChild(inEl);
+//play checkbox
+//make function to make checkbox
+const props=['muted','paused'];
+  for(let p of props){
+  tmpEl.appendChild(newChckbx(obj, num, p));
+  }
+  
+
+return tmpEl;
+}
+
+
+
+/*---------------------------------------------------------------------
+pre: none 
+post: none
+clears video list 
+---------------------------------------------------------------------*/
+function clrVidLst(){
+document.getElementById('vidList').innerHTML="";
+  browser.storage.local.get((d)=>{
+    d['vidLst']=null;
+    browser.storage.local.set(d);
+  }); 
+}
 
 /*---------------------------------------------------------------------
 pre: none 
@@ -40,7 +106,9 @@ let vidActVal=null;
         if(id&&vidAct){
         vidActVal=e.target.getAttribute("vidActVal")?e.target.getAttribute("vidActVal"):null;
           browser.tabs.query({active: true, currentWindow: true}).then((tabs) => {
-            browser.tabs.sendMessage(tabs[0].id, {action: 'actVid', msg:{id: id, act: vidAct, val:vidActVal}});
+            browser.tabs.sendMessage(tabs[0].id, {action: 'actVid', msg:{id: id, act: vidAct, val:vidActVal}}).then((respns)=>{
+            console.log(respns);
+            });
           });
         }
       break;
@@ -48,6 +116,35 @@ let vidActVal=null;
       browser.runtime.openOptionsPage(); 
       default:
       break;
+    }
+  });
+
+  //if active tab changes, clear the video list
+  browser.tabs.onActivated.addListener((info)=>{
+  clrVidLst();
+  });
+
+  //if page reloads, clear the video list
+  browser.tabs.onUpdated.addListener((info)=>{
+  clrVidLst();
+  });
+
+  //because apparently storage is async and the messaging method doesn't stay open long enough to pass something back nor does respond late enough to get the update from storage
+  //this makes the text area update when there's a new value
+  browser.storage.onChanged.addListener(function(changes,namespace){
+    console.log(changes);
+    console.log(namespace);
+    if(changes.hasOwnProperty('vidLst')&&changes['vidLst'].newValue){
+    //populate list
+      browser.storage.local.get('vidLst').then((d)=>{
+       console.log(d); 
+        for(let vidI in d.vidLst){
+        let tmpEl=vidCntrlDiv(d.vidLst[vidI], vidI);
+        let el=document.getElementById('vidList');
+        el.innerHTML='';
+        el.appendChild(tmpEl);
+        }
+      });
     }
   });
 }

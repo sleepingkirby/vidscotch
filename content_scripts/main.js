@@ -279,9 +279,39 @@ function main() {
   /*-----------------------------------------------
   pre:
   post:
+  gets list of all video elements and sets it into storage
+  -----------------------------------------------*/
+  function getSetVidList(){
+  let els=document.getElementsByTagName('video');
+  let hsh=[];
+    if(!els || els.length<=0){
+    return null;
+    }
+    for(let i of Object.keys(els)){
+      hsh[i]={
+      id:els[i].id,
+      name:els[i].name,
+      muted:els[i].muted,
+      volume:els[i].volume,
+      paused:els[i].paused
+      };
+    }
+
+    browser.storage.local.get().then((d)=>{
+      d['vidLst']=hsh;
+      browser.storage.local.set(d);
+    });
+  }
+
+  /*-----------------------------------------------
+  pre:
+  post:
   -----------------------------------------------*/
   function runOnMsg(request, sender, sendResponse){
     switch(request.action){
+      case 'loadVids':
+      getSetVidList();
+      break;
       case 'actVid':
         /*
         browser.storage.local.get().then((item) => {
@@ -301,6 +331,7 @@ function main() {
         sendResponse({'pullPatt':'done'});
         */
         console.log(request);
+        sendResponse({'testing': 'testval'});
       break;
       default:
       break;
