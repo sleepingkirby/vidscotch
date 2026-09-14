@@ -309,7 +309,6 @@ function main() {
   post:
   -----------------------------------------------*/
   function actVid(request, sendResponse=null){
-  console.log(request);
     if(!request){
     console.log(`no request data`);
     return null;
@@ -361,7 +360,7 @@ function main() {
        case 'bringfront':
         if(request.msg.val==true){
         vid.setAttribute('origZIndex',vid.style.zIndex);
-        vid.style.zIndex=2147483647;
+        vid.style.zIndex=2147483647; //max z-index value;
         }
         else{
         vid.style.zIndex=vid.getAttribute('origZIndex');
@@ -403,7 +402,8 @@ function main() {
         });
         sendResponse({'pullPatt':'done'});
         */
-        actVid(request, sendResponse);
+        //actVid(request, sendResponse);
+        actVid(request);
         
       break;
       default:
