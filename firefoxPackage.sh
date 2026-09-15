@@ -1,1 +1,1 @@
-zip -r -FS ./releases/vidscotch_firefox.zip content_scripts/ icons/ manifest.json
+zip -r -FS ./releases/vidscotch_firefox.zip content_scripts/ icons/ popup/ manifest.json
