@@ -151,7 +151,18 @@ function main() {
             default:
             break;
           }
-        } 
+        }
+        /*
+        else if(e.key==" "){
+        e.preventDefault();
+          if(curVidEl.paused){
+          curVidEl.play();
+          }
+          else if(!curVidEl.paused){
+          curVidEl.pause();
+          }
+        }
+        */
       }
     },{capture: true, passive: false});
 
