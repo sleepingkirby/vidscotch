@@ -73,7 +73,7 @@ function main() {
   -----------------------------------------------*/
   function skipVidToEnd(){
     if(curVidEl){
-    console.log("ButWhyMod: Video duraction: "+curVidEl.duration);
+    console.log("Vidscotch: Video duration: "+curVidEl.duration);
       if(curVidEl.duration<=Number.MAX_SAFE_INTEGER&&curVidEl.duration>=0){
       curVidEl.currentTime=curVidEl.duration;
       }
@@ -128,6 +128,23 @@ function main() {
               tmpVol=curVidEl.volume;
               tmpVol-=vol;
               curVidEl.volume=tmpVol<=0?0:tmpVol;
+            break;
+            default:
+            break;
+          }
+        }
+        else if(e.altKey&&(e.key=="j"||e.key=="l")){
+        e.preventDefault();
+        const rt=0.5;
+        let pr=Number(curVidEl.playbackRate);
+          switch(e.key){
+            case "j":
+              pr=pr-rt;
+              curVidEl.playbackRate=pr<=0?0:pr;
+            break;
+            case "l":
+              pr=pr+rt;
+              curVidEl.playbackRate=pr<=0?0:pr;
             break;
             default:
             break;
