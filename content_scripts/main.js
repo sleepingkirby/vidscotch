@@ -139,12 +139,12 @@ function main() {
         let pr=Number(curVidEl.playbackRate);
           switch(e.key){
             case "j":
-              pr=pr-rt;
+              pr=Number(pr-rt)<=0?0:pr-rt;
               curVidEl.playbackRate=pr<=0?0:pr;
               videoPlayrateChange(pr);
             break;
             case "l":
-              pr=pr+rt;
+              pr=Number(pr+rt)>=8?8:pr+rt;
               curVidEl.playbackRate=pr<=0?0:pr;
               videoPlayrateChange(pr);
             break;
@@ -180,36 +180,49 @@ function main() {
   evalutes as to what actions to do for the video stuff
   -----------------------------------------------*/
   function videoPlayrateChange(num){
+  let elId="vidscotchVSModPREl";
+  let stylId="extIdNmVSModPRStyl";
+  let ani="extIdNmVSModPRStylAni 1.5s ease-in-out 1.5s forwards";
+  //if element already exists, updated.
+  let tmpEl=document.getElementById(elId);
+  let tmpStyl=document.getElementById(stylId);
+    //removing preexisting elements
+    if(tmpEl){
+    document.body.removeChild(tmpEl);
+    }
+    if(tmpStyl){
+    document.head.removeChild(tmpStyl);
+    }
   let sty=document.createElement("style");
   sty.type="text/css";
-  sty.className="extIdNmVSModPRStyl";
+  sty.className=stylId;
   sty.textContent="@keyframes extIdNmVSModPRStylAni{0%{opacity:1;}100%{opacity:0;}}";
-  sty.id=sty.className;
+  sty.id=stylId;
 
   let el=document.createElement("div");
-  el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 4px 4px 0px;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;z-index:999999;animation: extIdNmVSModPRStylAni 1.5s ease-in-out 3.5s forwards;";
-  el.id="vidscotchVSModPREl";
-  el.innerText=num;
+  el.style.cssText=`position:absolute;margin:0px;padding:0px;z-index:999999;animation:extIdNmVSModPRStylAni 1.5s ease-in-out 1.5s forwards;display:flex;flex-direction:row;justify-content:center;border:none;`;
+  el.id=elId;
 
-  let elRect=el.getBoundingClientRect();
+  let txt=document.createElement("div");
+  txt.style.cssText=`color:#B4B4B4;background-color:rgba(0,0,0,0.6);border:none;text-align:center;border-radius:0px 0px 6px 6px;min-width:20px;width:fit-content;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;display:flex;justify-content:center;`;
+  txt.innerText=num;
 
-  
+  el.appendChild(txt);
 
   let pos=curEl.getBoundingClientRect();
-  c
   //el.style.left=window.scrollX+pos.x+Math.floor(Number(pos.width)/2 - el.Rect/2)+"px";
-  el.style.left=window.scrollX+pos.x+Math.floor(Number(pos.width/2))+"px";
+  el.style.left=window.scrollX+pos.x+"px";
   el.style.top=window.scrollY+pos.y+"px";
+  el.style.width=pos.width+"px";
 
-  /*
   el.onanimationend=(e)=>{
     document.body.removeChild(el);
     document.head.removeChild(sty);
     };
-  */
+
   document.body.appendChild(el);
   document.head.appendChild(sty);
- 
+
   return 0;
   }
 
