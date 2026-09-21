@@ -141,10 +141,12 @@ function main() {
             case "j":
               pr=pr-rt;
               curVidEl.playbackRate=pr<=0?0:pr;
+              videoPlayrateChange(pr);
             break;
             case "l":
               pr=pr+rt;
               curVidEl.playbackRate=pr<=0?0:pr;
+              videoPlayrateChange(pr);
             break;
             default:
             break;
@@ -170,6 +172,45 @@ function main() {
         }
       }
     },{capture: true, passive: false});
+  }
+
+  /*-----------------------------------------------
+  pre: global var curVidEl, curEl and dmn
+  post:
+  evalutes as to what actions to do for the video stuff
+  -----------------------------------------------*/
+  function videoPlayrateChange(num){
+  let sty=document.createElement("style");
+  sty.type="text/css";
+  sty.className="extIdNmVSModPRStyl";
+  sty.textContent="@keyframes extIdNmVSModPRStylAni{0%{opacity:1;}100%{opacity:0;}}";
+  sty.id=sty.className;
+
+  let el=document.createElement("div");
+  el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 4px 4px 0px;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;z-index:999999;animation: extIdNmVSModPRStylAni 1.5s ease-in-out 3.5s forwards;";
+  el.id="vidscotchVSModPREl";
+  el.innerText=num;
+
+  let elRect=el.getBoundingClientRect();
+
+  
+
+  let pos=curEl.getBoundingClientRect();
+  c
+  //el.style.left=window.scrollX+pos.x+Math.floor(Number(pos.width)/2 - el.Rect/2)+"px";
+  el.style.left=window.scrollX+pos.x+Math.floor(Number(pos.width/2))+"px";
+  el.style.top=window.scrollY+pos.y+"px";
+
+  /*
+  el.onanimationend=(e)=>{
+    document.body.removeChild(el);
+    document.head.removeChild(sty);
+    };
+  */
+  document.body.appendChild(el);
+  document.head.appendChild(sty);
+ 
+  return 0;
   }
 
   /*-----------------------------------------------
